@@ -6,7 +6,7 @@
 
       Custom Objects Used in Poker Games
       Author: Sham Nemer
-      Date:  4/17/25     
+      Date:  4/22/25     
 
       Filename:       objects.js
  */
@@ -18,8 +18,24 @@ let pokerGame = {
    placeBet: function(){
       this.currentBank -= this.currentBet;
       return this.currentBank
+   },
+   payBet: function(type) {
+      let pay = 0;
+      switch (type) {
+      case "Royal Flush": pay = 250; break;
+      case "Straight Flush": pay = 50; break;
+      case "Four of a Kind": pay = 25; break;
+      case "Full House": pay = 9; break;
+      case "Flush": pay = 6; break;
+      case "Straight": pay = 4; break;
+      case "Three of a Kind": pay = 3; break;
+      case "Two Pair": pay = 2; break;
+      case "Jacks or Better": pay = 1; break;
+      }
+      this.currentBank += pay * this.currentBet;
+      return this.currentBank
    }
-}
+};
    
 /* Constructor function for poker cards */
 function pokerCard(cardSuit, cardRank){
@@ -27,9 +43,9 @@ function pokerCard(cardSuit, cardRank){
    this.rank = cardRank;
 }
 
-/*Method to refernce the image source file for a card*/ 
+/*Method to reference the image source file for a card*/ 
 pokerCard.prototype.cardImage = function() {
-   return this.rank + " " + this.suit + ".png";
+   return this.rank + "_" + this.suit + ".png";
 };
 
 /* Constructor function for poker hands */ 
@@ -41,7 +57,7 @@ function pokerHand(handLength){
 function pokerDeck(){
    //List the suits and ranks 
    let suits = ["clubs", "diamonds", "hearts", "spades"];
-   let ranks = ["2", "3", "3", "5", "6", "7", "8", "9"];
+   let ranks = ["2", "3", "3", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"];
 
    this.cards = [];
 
@@ -65,6 +81,10 @@ function pokerDeck(){
       let cardsDealt = pokerHand.cards.length;
       pokerHand.cards = this.cards.splice(0, cardsDealt);
    }
+}
+//Method to determine the value of the pokerHand
+pokerHand.prototype.getHandValue = function() {
+   return handType(this);
 }
    /* ------------------------------------------------+
    | The handType() function returns a text string of |
@@ -181,26 +201,3 @@ function pokerDeck(){
    +-------------------------------------------------*/   
  
  
- 
- 
- 
- 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
